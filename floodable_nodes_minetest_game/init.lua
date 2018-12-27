@@ -1,5 +1,4 @@
 local patch_node = function(nodename)
-	print(nodename)
 	local def = minetest.registered_nodes[nodename]
 	if not def then
 		return
