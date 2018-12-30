@@ -24,6 +24,16 @@ for i = 1, 8, 1 do
 	add("farming:wheat_"..i)
 end
 
+-- flowers mod plants
+local flowers = {
+	"rose", "tulip", "dandelion_yellow",
+	"geranium", "viola", "dandelion_white",
+	"mushroom_red", "mushroom_brown",
+}
+for _, flower in ipairs(flowers) do
+	add("flowers:"..flower)
+end
+
 
 
 
