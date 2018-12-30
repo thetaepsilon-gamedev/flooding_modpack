@@ -34,3 +34,25 @@ end
 for n, _ in pairs(extra_targets) do
 	patch_node(n)
 end
+
+
+
+
+-- papyrus is a little bit more complex due to it's cascading behaviour;
+-- to call it's after_dig_node function we'd normally have to pass some data in,
+-- notably a digger object that quacks enough like a player to not crash.
+-- fortunately minetest.dig_node takes care of that for us here.
+local ghost_dig = minetest.on_flood_dig_node
+local custom_patches = {
+	["default:papyrus"] = {
+		on_flood = ghost_dig,
+	}
+}
+for node, patch in pairs(custom_patches) do
+	if minetest.registered_nodes[node] then
+		-- do this automatically as why else would we be here...
+		patch.floodable = true
+		minetest.override_item(node, patch)
+	end
+end
+
