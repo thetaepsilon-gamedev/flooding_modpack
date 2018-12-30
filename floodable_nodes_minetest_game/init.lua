@@ -19,9 +19,10 @@ local add = function(n)
 	extra_targets[n] = true
 end
 
--- farming wheat
+-- farming nodes
 for i = 1, 8, 1 do
 	add("farming:wheat_"..i)
+	add("farming:cotton_"..i)
 end
 
 -- flowers mod plants
