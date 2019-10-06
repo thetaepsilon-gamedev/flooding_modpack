@@ -7,7 +7,9 @@ local target_inv = "main"	-- player inventory name, should not normally be chang
 
 
 local spawn = minetest.add_item
-local process_item = function(itemref, inv, item)
+
+local process_item = function(itemref, playerref, item)
+	local inv = playerref:get_inventory()
 	local origin = itemref:get_pos()
 	local leftover = inv:add_item(target_inv, item)
 	-- ensure original entity is killed
@@ -29,8 +31,7 @@ local handle_entity = function(playerref, itemref)
 	local item = luadata.itemstring
 	if not item then return end
 
-	local inv = playerref:get_inventory()
-	process_item(itemref, inv, item)
+	process_item(itemref, playerref, item)
 end
 
 local find = minetest.get_objects_inside_radius
