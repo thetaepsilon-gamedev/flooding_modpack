@@ -7,11 +7,11 @@ local target_inv = "main"	-- player inventory name, should not normally be chang
 
 
 local spawn = minetest.add_item
-local process_item = function(ref, inv, item)
-	local origin = ref:get_pos()
+local process_item = function(itemref, inv, item)
+	local origin = itemref:get_pos()
 	local leftover = inv:add_item(target_inv, item)
 	-- ensure original entity is killed
-	ref:remove()
+	itemref:remove()
 
 	-- leave behind anything which cannot fit.
 	if leftover and leftover:get_count() > 0 then
@@ -19,8 +19,8 @@ local process_item = function(ref, inv, item)
 	end
 end
 
-local handle_entity = function(ref, inv)
-	local luadata = ref:get_luaentity()
+local handle_entity = function(playerref, itemref)
+	local luadata = itemref:get_luaentity()
 	if not luadata then return end
 	if not luadata.name == "__builtin:item" then return end
 	local age = luadata.age or 0
@@ -29,16 +29,16 @@ local handle_entity = function(ref, inv)
 	local item = luadata.itemstring
 	if not item then return end
 
-	process_item(ref, inv, item)
+	local inv = playerref:get_inventory()
+	process_item(itemref, inv, item)
 end
 
 local find = minetest.get_objects_inside_radius
 local run_for_player = function(playerref)
-	local inv = playerref:get_inventory()
 	local pos = playerref:get_pos()
 	local objects = find(pos, radius)
-	for i, ref in ipairs(objects) do
-		handle_entity(ref, inv)
+	for i, itemref in ipairs(objects) do
+		handle_entity(playerref, itemref)
 	end
 end
 
